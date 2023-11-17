@@ -1,4 +1,4 @@
-name: Spacebattle
+name: SpacebattleMove
 
 on:
   [pull_request, push]
@@ -16,7 +16,7 @@ jobs:
           dotnet-version: 8.0.x
       - name: Restore dependencies
         run: dotnet restore Spacebattle.Lib
-
+      
       - name: Build
         run: dotnet build Spacebattle.Lib --no-restore /p:ContinuousIntegrationBuild=true
       
