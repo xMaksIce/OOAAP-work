@@ -4,13 +4,7 @@ public class Vector
 {
     private readonly int[] _values;
     public int Size => _values.Length;
-
-    public int this[int index]
-    {
-        get => _values[index];
-        set => _values[index] = value;
-    }
-
+    
     public Vector(params int[] values)
     {
         _values = values ?? throw new ArgumentNullException(nameof(values));
@@ -28,11 +22,13 @@ public class Vector
     public override bool Equals(object? obj)
     {
         var otherVector = obj as Vector;
-        return otherVector._values.SequenceEqual(_values);
+        return otherVector!._values.SequenceEqual(_values);
     }
 
     public override int GetHashCode()
     {
-        return _values.GetHashCode();
+        int hash = 17;
+        hash = _values.Aggregate((hash, value) => hash * 23 + value.GetHashCode());
+        return hash;
     }
 }
