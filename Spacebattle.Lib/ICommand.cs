@@ -1,4 +1,4 @@
-﻿namespace spacebattle.lib;
+﻿namespace Spacebattle.Lib;
 
 public interface ICommand
 {
