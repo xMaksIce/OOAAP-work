@@ -3,9 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spacebattle.Lib", "Spacebattle.Lib\Spacebattle.Lib.csproj", "{532E666C-C911-4155-A3A1-29B4CD93A6F3}"
+
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spacebattle.Lib", "Spacebattle.Lib\Spacebattle.Lib.csproj", "{8F8BCFE4-3610-4F7A-9B1C-38F2C0DF04B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spacebattle.Tests", "Spacebattle.Tests\Spacebattle.Tests.csproj", "{0CF60D75-76CD-4290-BB8F-D44D6394320E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spacebattle.Tests", "Spacebattle.Tests\Spacebattle.Tests.csproj", "{630BC79C-553D-4FAC-A40D-62663B767C67}"
+
+
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,13 +19,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{532E666C-C911-4155-A3A1-29B4CD93A6F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{532E666C-C911-4155-A3A1-29B4CD93A6F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{532E666C-C911-4155-A3A1-29B4CD93A6F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{532E666C-C911-4155-A3A1-29B4CD93A6F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0CF60D75-76CD-4290-BB8F-D44D6394320E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0CF60D75-76CD-4290-BB8F-D44D6394320E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0CF60D75-76CD-4290-BB8F-D44D6394320E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0CF60D75-76CD-4290-BB8F-D44D6394320E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F8BCFE4-3610-4F7A-9B1C-38F2C0DF04B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F8BCFE4-3610-4F7A-9B1C-38F2C0DF04B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F8BCFE4-3610-4F7A-9B1C-38F2C0DF04B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F8BCFE4-3610-4F7A-9B1C-38F2C0DF04B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{630BC79C-553D-4FAC-A40D-62663B767C67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{630BC79C-553D-4FAC-A40D-62663B767C67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{630BC79C-553D-4FAC-A40D-62663B767C67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{630BC79C-553D-4FAC-A40D-62663B767C67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
