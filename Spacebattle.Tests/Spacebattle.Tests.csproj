@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
+
      <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
@@ -14,6 +15,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.1" />
     <PackageReference Include="Moq" Version="4.20.69" />
     <PackageReference Include="xunit" Version="2.4.2" />
@@ -29,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Spacebattle.Lib\Spacebattle.Lib.csproj" />
-  </ItemGroup>
+   </ItemGroup>
+
 
 </Project>
