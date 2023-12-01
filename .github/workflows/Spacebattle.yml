@@ -22,4 +22,3 @@ jobs:
       
       - name: SpacebattleTests
         run: dotnet test /p:CollectCoverage=true 
-        
