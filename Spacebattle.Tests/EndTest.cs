@@ -4,7 +4,7 @@ using Moq;
 namespace Spacebattle.Tests;
 public class EndCommandTests
 {
-    private void InitializeIoC()
+    public EndCommandTests()
     {
         new InitScopeBasedIoCImplementationCommand().Execute();
         IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root"))).Execute();
@@ -30,8 +30,6 @@ public class EndCommandTests
     [Fact]
     public void BridgeCommandTest()
     {
-        InitializeIoC();
-
         var cmd = new Mock<Lib.ICommand>();
         cmd.Setup(x => x.Execute()).Verifiable();
         var bridgeCommand = new BridgeCommand(cmd.Object);
@@ -43,7 +41,6 @@ public class EndCommandTests
     [Fact]
     public void EndMoveCommandTest()
     {
-        InitializeIoC();
         var cmd = new Mock<Lib.ICommand>();
         var endableCmd = new Mock<IMoveEndable>();
         var bridgeCmd = new BridgeCommand(cmd.Object);
