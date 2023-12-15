@@ -17,7 +17,7 @@ public class EndCommandTests
         }).Execute();
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Object.DeleteProperty", (object[] args) =>
         {
-            var gameObj = (IUObject)args[0];
+            var gameObj = (UObject)args[0];
             var properties = (List<string>)args[1];
             properties.ForEach(prop => gameObj.DeleteProperty(prop));
             return "";
@@ -44,7 +44,7 @@ public class EndCommandTests
         var cmd = new Mock<Lib.ICommand>();
         var endableCmd = new Mock<IMoveEndable>();
         var bridgeCmd = new BridgeCommand(cmd.Object);
-        var gameObj = new Mock<IUObject>();
+        var gameObj = new Mock<UObject>();
         var propNames = new List<string> {"Velocity"};
         var props = new Dictionary<string, object>();
         gameObj.Setup(o => o.SetProperty(It.IsAny<string>(), It.IsAny<object>())).Callback<string, object>(props.Add);

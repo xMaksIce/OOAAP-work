@@ -4,7 +4,7 @@ namespace Spacebattle.Lib;
 public interface IMoveEndable
 {
     public BridgeCommand Command { get; }
-    public IUObject Object { get; }
+    public UObject Object { get; }
     public IEnumerable<object> Property { get; }
 }
 
