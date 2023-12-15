@@ -14,7 +14,9 @@ public class StartMoveCommand: ICommand
         
         var cmd = IoC.Resolve<ICommand>("Game.Commands.Move", _moveCommandStartable.Target); // 2. cmd = Конструивание длительной операции (IoC.Resolve<ICommand>("Game.Operation.Move"))
 
-        _moveCommandStartable.Target.SetProperty("Command", cmd); // 3. Закинуть длительную операцию в таргет
+        var injectableCommand = IoC.Resolve<ICommand>("Game.Commands.Injectable", cmd); // inject - обёртка 
+
+        _moveCommandStartable.Target.SetProperty("InjectableCommand", injectableCommand); // 3. Закинуть длительную операцию в таргет
         
         IoC.Resolve<IQueue>("Game.Queue").Add(cmd); // 4. cmd закинуть в очередь
 

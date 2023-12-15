@@ -19,7 +19,7 @@ public class LongOperationTest
 
         var startMoveCommand = new StartMoveCommand(moveCommandStartable.Object);
 
-
+        // IQueue mocking 
         var qMock = new Mock<IQueue>();
         var qReal = new Queue<ICommand>();
         qMock.Setup(q => q.Take()).Returns( () => qReal.Dequeue() );
@@ -34,6 +34,14 @@ public class LongOperationTest
         IoC.Resolve<Hwdtech.ICommand>(
             "IoC.Register", 
             "Game.Commands.Move", 
+            (object[] args)=> {
+                return moveCommand;
+            }
+        ).Execute();
+
+        IoC.Resolve<Hwdtech.ICommand>(
+            "IoC.Register", 
+            "Game.Commands.Injectable", 
             (object[] args)=> {
                 return moveCommand;
             }
