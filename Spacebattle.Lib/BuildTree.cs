@@ -1,3 +1,6 @@
+using System.Collections;
+using Hwdtech;
+
 namespace Spacebattle.Lib;
 
 public interface IVectorslike
@@ -14,6 +17,21 @@ public class BuildTree: ICommand
     }
     public void Execute()
     {
-
+        Hashtable growTree = new()
+        {
+            { false, new Action<Hashtable, int>((root, branch) => root.Add(branch, new Hashtable())) },
+            { true, new Action<Hashtable, int>((root, branch) => {}) }
+        };
+        List<List<int>> vectors = _rawVectors.ToActualVectors();
+        vectors.ForEach(vector =>
+        {
+            Hashtable? tree = IoC.Resolve<Hashtable>("Game.Collision.SetupTree");
+            vector.ForEach(branch =>
+            {
+                bool checkKey = tree.ContainsKey(branch);
+                ((Action<Hashtable, int>?)growTree[checkKey])?.Invoke(tree, branch);
+                tree = (Hashtable?) tree[branch];
+            });
+        });
     }
 }
