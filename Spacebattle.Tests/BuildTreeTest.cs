@@ -31,5 +31,15 @@ public class BuildTreeTests
             }}
         }};
         
+        bool HashtablesEqual(Hashtable table1, Hashtable table2)
+        {
+            return table1.Count == table2.Count &&              // сравниваем кол-во ветвлений на текущем уровне
+                table1.Cast<DictionaryEntry>().All(entry =>     // проходимся по каждому ветвлению
+                    table2.Contains(entry.Key) &&               // проверяем, есть ли текущая вершина в сравниваемой таблице
+                    HashtablesEqual((Hashtable)(entry.Value ?? new Hashtable()), // рекурсивно сравниваем следующие уровни дерева
+                                    (Hashtable)(table2[entry.Key] ?? new Hashtable())));
+        }
+
+        Assert.True(HashtablesEqual(actualTree, shouldBe));
     }
 }
