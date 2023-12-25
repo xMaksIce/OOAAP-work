@@ -17,7 +17,7 @@ public class BuildTree: ICommand
     }
     public void Execute()
     {
-        Hashtable growTree = new()
+        Dictionary<bool, Action<Hashtable, int>> growTreeByCondition = new()
         {
             { false, new Action<Hashtable, int>((root, branch) => root.Add(branch, new Hashtable())) },
             { true, new Action<Hashtable, int>((root, branch) => {}) }
@@ -29,7 +29,7 @@ public class BuildTree: ICommand
             vector.ForEach(branch =>
             {
                 bool checkKey = tree.ContainsKey(branch);
-                ((Action<Hashtable, int>?)growTree[checkKey])?.Invoke(tree, branch);
+                growTreeByCondition[checkKey].Invoke(tree, branch);
                 tree = (Hashtable?) tree[branch];
             });
         });
