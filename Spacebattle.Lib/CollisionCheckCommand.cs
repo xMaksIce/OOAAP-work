@@ -1,25 +1,14 @@
 using Hwdtech;
 
 namespace Spacebattle.Lib;
-
-public class CollisionCheckCommand : ICommand
+public class CollisionCheckCommand: ICommand
 {
-    private readonly IUObject _first, _second;
-
-    public CollisionCheckCommand(IUObject _first, IUObject _second)
+    private readonly IUObject _firstObject, _secondObject;
+    public CollisionCheckCommand(IUObject obj1, IUObject obj2)
     {
-        this._first = _first;
-        this._second = _second;
+        _firstObject = obj1;
+        _secondObject = obj2;
     }
 
-    public void Execute()
-    {
-
-        bool result = IoC.Resolve<bool>("Events.Collision.Determinant", _first, _second);
-
-        if (result)
-        {
-            throw new Exception(string.Format("There was a conflict between {0} and {1}", _first.ToString(), _second.ToString()));
-        }
-    }
+    public void Execute() => IoC.Resolve<ICommand>("Objects.Collision.Check", _firstObject, _secondObject).Execute();     
 }
