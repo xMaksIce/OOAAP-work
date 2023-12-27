@@ -17,8 +17,8 @@ public class BuldingMacroCommandStrategy
     public static MacroCommand Build(string operationName, object target)
     {
         List<ICommand> commands = new();
-        List<string> dependenciesNames = IoC.Resolve<List<string>>("GetDependenciesNames", operationName);
-        dependenciesNames.ForEach(dependencyName => commands.Add(IoC.Resolve<ICommand>(dependencyName, target)));
+        IEnumerable<string> dependenciesNames = IoC.Resolve<IEnumerable<string>>("GetDependenciesNames", operationName);
+        dependenciesNames.ToList().ForEach(dependencyName => commands.Add(IoC.Resolve<ICommand>(dependencyName, target)));
         return IoC.Resolve<MacroCommand>("Game.Command.Macro", commands);
     }
 }
