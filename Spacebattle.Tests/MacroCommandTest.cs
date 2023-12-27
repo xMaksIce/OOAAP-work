@@ -26,7 +26,8 @@ public class MacroCommandTest
         Mock<Lib.ICommand> secondCmd = new();
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.First",
         (object[] args) => firstCmd.Object).Execute(); 
-        // target по факту не используется, в реальности было бы например: (args) => new MoveCommand(args[0])
+        // target по факту не используется, в реальности было бы например: (args) => new MoveCommand(args[0]),
+        //                                                                  где args[0] - target
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.Second",
         (object[] args) => secondCmd.Object).Execute();
 
