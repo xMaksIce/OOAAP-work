@@ -1,18 +1,14 @@
+using System.Collections;
 using Hwdtech;
 
 namespace Spacebattle.Lib;
-
-public interface IHandler
-{
-    public void Handle();
-}
 
 public class RegisterExceptionHandler : ICommand
 {
     private readonly ICommand command;
     private readonly Exception exception;
-    private readonly IHandler handler;
-    public RegisterExceptionHandler(ICommand command, Exception exception, IHandler handler) 
+    private readonly ICommand handler;
+    public RegisterExceptionHandler(ICommand command, Exception exception, ICommand handler) 
     {
         this.command = command;
         this.exception = exception;
@@ -20,8 +16,13 @@ public class RegisterExceptionHandler : ICommand
     }
     public void Execute()
     {
-        Type typeCmd = command.GetType();
-        Type typeExc = exception.GetType();
-        IoC.Resolve<ICommand>("Game.Handle.Register", typeCmd, typeExc, handler);
+        var typeCmd = command.GetType();
+        var typeExc = exception.GetType();
+        
+        Hashtable? tree = IoC.Resolve<Hashtable>("Game.Handle.GetTree");
+
+        if (!tree.ContainsKey(typeCmd)) tree.Add(typeCmd, new Hashtable());
+        tree = (Hashtable?) tree[typeCmd] ?? new Hashtable();
+        if (!tree.ContainsKey(typeExc)) tree.Add(typeExc, handler);
     }
 }
