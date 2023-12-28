@@ -1,13 +1,13 @@
 using Hwdtech;
 
 namespace Spacebattle.Lib;
-public class StartMacroCommand : ICommand
+public class LongOperationCommand : ICommand
 {
     private readonly IMoveCommandStartable _moveCommandStartable;
     private readonly string _dependency;
     
 
-    public StartMacroCommand(string dependency,  IMoveCommandStartable mcs)
+    public LongOperationCommand(string dependency,  IMoveCommandStartable mcs)
     {
         _dependency = dependency;
         _moveCommandStartable = mcs;

@@ -21,7 +21,7 @@ public class MacroCommandTests
 
         string dependencyName = "Rotate";
 
-        var startMacroCommand = new StartMacroCommand(dependencyName, moveCommandStartable.Object);
+        var startMacroCommand = new LongOperationCommand(dependencyName, moveCommandStartable.Object);
 
         var qMock = new Mock<IQueue>();
         var qReal = new Queue<ICommand>();
