@@ -21,7 +21,7 @@ public class StartMacroCommand : ICommand
 
         var cmd = IoC.Resolve<ICommand>(depPath, _moveCommandStartable.Target);
         
-        // var macro = IoC.Resolve<ICommand>("Game.Commands.MacroCommand", cmd);
+        var macro = IoC.Resolve<ICommand>("Game.Commands.MacroCommand", cmd);
 
         ICommand injectableCommand = IoC.Resolve<ICommand>("Game.Commands.Injectable", cmd); 
 
@@ -29,16 +29,5 @@ public class StartMacroCommand : ICommand
 
         IoC.Resolve<IQueue>("Game.Queue").Add(cmd); 
 
-
     }
 }
-
-// _moveCommandStartable.Property.ToList().ForEach(p => _moveCommandStartable.Target.SetProperty(p.Key, p.Value)); // 1. Присвоение свойств.
-
-// var cmd = IoC.Resolve<ICommand>("Game.Commands.Move", _moveCommandStartable.Target); // 2. cmd = Конструивание длительной операции (IoC.Resolve<ICommand>("Game.Operation.Move"))
-
-// var injectableCommand = IoC.Resolve<ICommand>("Game.Commands.Injectable", cmd); // inject - обёртка 
-
-// _moveCommandStartable.Target.SetProperty("InjectableCommand", injectableCommand); // 3. Закинуть длительную операцию в таргет
-
-// IoC.Resolve<IQueue>("Game.Queue").Add(cmd); // 4. cmd закинуть в очередь

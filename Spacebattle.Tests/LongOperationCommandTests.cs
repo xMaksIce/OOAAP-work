@@ -4,7 +4,7 @@ using Moq;
 
 namespace Spacebattle.Lib.Tests;
 
-public class StartMacroCommandTests
+public class MacroCommandTests
 {
     [Fact]
     public void RegistersMacroCommandAndQueue_WhenAddingItIntoQueue_ThenCompareTakenAndGivenCommands()
@@ -45,6 +45,14 @@ public class StartMacroCommandTests
         {
             return macroCommand;
         }
+        ).Execute();
+
+        IoC.Resolve<Hwdtech.ICommand>(
+            "IoC.Register", 
+            "Game.Commands.MacroCommand", 
+            (object[] args)=> {
+                return macroCommand;
+            }
         ).Execute();
 
         IoC.Resolve<Hwdtech.ICommand>(
