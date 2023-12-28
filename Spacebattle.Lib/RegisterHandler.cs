@@ -19,10 +19,9 @@ public class RegisterExceptionHandler : ICommand
         var typeCmd = command.GetType();
         var typeExc = exception.GetType();
         
-        Hashtable? tree = IoC.Resolve<Hashtable>("Game.Handle.GetTree");
+        var tree = IoC.Resolve<Dictionary<Type, Dictionary<Type, ICommand>>>("Game.Handle.GetTree");
 
-        if (!tree.ContainsKey(typeCmd)) tree.Add(typeCmd, new Hashtable());
-        tree = (Hashtable?) tree[typeCmd] ?? new Hashtable();
-        if (!tree.ContainsKey(typeExc)) tree.Add(typeExc, handler);
+        tree.TryAdd(typeCmd, new Dictionary<Type, ICommand>());
+        tree[typeCmd].TryAdd(typeExc, handler);
     }
 }

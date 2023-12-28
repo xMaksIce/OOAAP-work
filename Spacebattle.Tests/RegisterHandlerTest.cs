@@ -12,7 +12,7 @@ public class RegisterHandler
         new InitScopeBasedIoCImplementationCommand().Execute();
         IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root"))).Execute();
         
-        Hashtable tree = new();
+        Dictionary<Type, Dictionary<Type, Lib.ICommand>> tree = new();
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Handle.GetTree", (object[] args) => tree).Execute();
 
         Mock<IMovable> movable = new();
@@ -25,12 +25,12 @@ public class RegisterHandler
         new RegisterExceptionHandler(moveCommand, firstException, firstHandler.Object).Execute();
         new RegisterExceptionHandler(moveCommand, secondException, secondHandler.Object).Execute();
 
-        var actualTree = IoC.Resolve<Hashtable>("Game.Handle.GetTree");
+        var actualTree = IoC.Resolve<Dictionary<Type, Dictionary<Type, Lib.ICommand>>>("Game.Handle.GetTree");
 
         Type moveCType = typeof(MoveCommand);
         Type firstExcType = typeof(InvalidOperationException);
         Type secondExcType = typeof(NotFiniteNumberException);
-        Assert.Equal(((Hashtable?)actualTree[moveCType])?[firstExcType], firstHandler.Object);
-        Assert.Equal(((Hashtable?)actualTree[moveCType])?[secondExcType], secondHandler.Object);
+        Assert.Equal(actualTree[moveCType][firstExcType], firstHandler.Object);
+        Assert.Equal(actualTree[moveCType][secondExcType], secondHandler.Object);
     }
 }
