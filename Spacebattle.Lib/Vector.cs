@@ -19,6 +19,30 @@ public class Vector
         return result;
     }
 
+    public static Vector operator -(Vector left, Vector right)
+    {
+        if (left.Size != right.Size)
+            throw new InvalidOperationException("Размеры векторов не совпадают");
+        var resultValues = left._values.Zip(right._values, (a, b) => a - b).ToArray();
+        var result = new Vector(resultValues);
+        return result;
+    }
+
+    public static Vector Concat(Vector left, Vector right)
+    {
+        var resultValue = left._values.Concat(right._values).ToArray();
+        var resultVector = new Vector(resultValue);
+        
+        return resultVector; 
+    }
+
+    public static IEnumerator<int> GetEnumerator(Vector v)
+    {
+        var array = v._values;
+
+        return ((IEnumerable<int>)array).GetEnumerator(); 
+    }
+
     public override bool Equals(object? obj)
     {
         var otherVector = obj as Vector;
