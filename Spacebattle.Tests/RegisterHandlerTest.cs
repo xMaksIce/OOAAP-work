@@ -38,6 +38,7 @@ public class RegisterHandler
         Hashtable moveCommandBranch = new(){
             {firstExcType, firstHandler.Object},
             {thirdExcType, thirdHandler.Object}};
+
         Assert.Equal(moveCommandBranch, actualTree[moveCType]);
         Assert.Equal(secondHandler.Object, actualTree[secondExcType]);
     }
