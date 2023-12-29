@@ -5,23 +5,23 @@ namespace Spacebattle.Lib;
 
 public class RegisterExceptionHandler : ICommand
 {
-    private readonly ICommand command;
-    private readonly Exception exception;
+    private readonly object cmdOrExc;
     private readonly ICommand handler;
-    public RegisterExceptionHandler(ICommand command, Exception exception, ICommand handler) 
+    public RegisterExceptionHandler(object cmdOrExc, ICommand handler) 
     {
-        this.command = command;
-        this.exception = exception;
+        this.cmdOrExc = cmdOrExc;
         this.handler = handler;
     }
+
     public void Execute()
     {
-        var typeCmd = command.GetType();
-        var typeExc = exception.GetType();
+        Type objType = cmdOrExc.GetType();
         
-        var tree = IoC.Resolve<Dictionary<Type, Dictionary<Type, ICommand>>>("Game.Handle.GetTree");
+        var tree = IoC.Resolve<Hashtable>("Game.Handle.GetTree");
 
-        tree.TryAdd(typeCmd, new Dictionary<Type, ICommand>());
-        tree[typeCmd].TryAdd(typeExc, handler);
+        if (!tree.ContainsKey(objType))
+        {
+            tree[objType] = handler;
+        }
     }
 }
