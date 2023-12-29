@@ -17,18 +17,28 @@ public class RegisterHandler
 
         Mock<IMovable> movable = new();
         MoveCommand moveCommand = new(movable.Object);
-        NotFiniteNumberException exception = new();
+        InvalidOperationException firstException = new();
+        NotFiniteNumberException secondException = new();
+        NotFiniteNumberException thirdException = new(); 
         Mock<Lib.ICommand> firstHandler = new();
         Mock<Lib.ICommand> secondHandler = new();
+        Mock<Lib.ICommand> thirdHandler = new();
 
-        new RegisterExceptionHandler(moveCommand, firstHandler.Object).Execute();
-        new RegisterExceptionHandler(exception, secondHandler.Object).Execute();
-
+        new RegisterExceptionHandler(new List<object>(){ moveCommand, firstException }, firstHandler.Object).Execute();
+        new RegisterExceptionHandler(new List<object>(){ secondException }, secondHandler.Object).Execute();
+        new RegisterExceptionHandler(new List<object>(){ moveCommand, thirdException }, thirdHandler.Object).Execute();
+        
         Hashtable actualTree = IoC.Resolve<Hashtable>("Game.Handle.GetTree");
 
         Type moveCType = typeof(MoveCommand);
-        Type excType = typeof(NotFiniteNumberException);
-        Assert.Equal(actualTree[moveCType], firstHandler.Object);
-        Assert.Equal(actualTree[excType], secondHandler.Object);
+        Type firstExcType = typeof(InvalidOperationException);
+        Type secondExcType = typeof(NotFiniteNumberException);
+        Type thirdExcType = typeof(NotFiniteNumberException);
+
+        Hashtable moveCommandBranch = new(){
+            {firstExcType, firstHandler.Object},
+            {thirdExcType, thirdHandler.Object}};
+        Assert.Equal(moveCommandBranch, actualTree[moveCType]);
+        Assert.Equal(secondHandler.Object, actualTree[secondExcType]);
     }
 }

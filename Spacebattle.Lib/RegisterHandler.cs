@@ -5,23 +5,32 @@ namespace Spacebattle.Lib;
 
 public class RegisterExceptionHandler : ICommand
 {
-    private readonly object cmdOrExc;
+    private readonly IEnumerable<object> cmdOrExcTrail; 
     private readonly ICommand handler;
-    public RegisterExceptionHandler(object cmdOrExc, ICommand handler) 
+    public RegisterExceptionHandler(IEnumerable<object> cmdOrExcTrail, ICommand handler) 
     {
-        this.cmdOrExc = cmdOrExc;
+        this.cmdOrExcTrail = cmdOrExcTrail;
         this.handler = handler;
     }
 
     public void Execute()
     {
-        Type objType = cmdOrExc.GetType();
-        
-        var tree = IoC.Resolve<Hashtable>("Game.Handle.GetTree");
+        Hashtable? tree = IoC.Resolve<Hashtable>("Game.Handle.GetTree");
 
-        if (!tree.ContainsKey(objType))
+        Dictionary<bool, Action<Type>> branching = new(){
+            {true, new Action<Type>((nodeType) => {
+                if (!tree.ContainsKey(nodeType)) 
+                    tree.Add(nodeType, new Hashtable());
+                tree = (Hashtable?) tree[nodeType];})},
+            {false, new Action<Type>((nodeType) => {
+                if (!tree.ContainsKey(nodeType)) 
+                    tree.Add(nodeType, handler);})}};
+
+        cmdOrExcTrail.ToList().ForEach((node) =>
         {
-            tree[objType] = handler;
-        }
+            Type typeOfNode = node.GetType();
+            bool isNodeACommand = typeOfNode.IsAssignableTo(typeof(ICommand));
+            branching[isNodeACommand].Invoke(typeOfNode);
+        });
     }
 }
