@@ -24,7 +24,7 @@ public class RegisterHandler
         new RegisterExceptionHandler(moveCommand, firstHandler.Object).Execute();
         new RegisterExceptionHandler(exception, secondHandler.Object).Execute();
 
-        var actualTree = IoC.Resolve<Hashtable>("Game.Handle.GetTree");
+        Hashtable actualTree = IoC.Resolve<Hashtable>("Game.Handle.GetTree");
 
         Type moveCType = typeof(MoveCommand);
         Type excType = typeof(NotFiniteNumberException);
