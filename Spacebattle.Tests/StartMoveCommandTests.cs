@@ -11,9 +11,7 @@ public class LongOperationTest
     {
         // making 'IoC.Register' start working
         new InitScopeBasedIoCImplementationCommand().Execute();  
-        
-        IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root"))).Execute();
-        
+
         var moveCommandStartable = new Mock<IMoveCommandStartable>(); 
         // initialize properties for mock object
         moveCommandStartable.SetupGet(mcs => mcs.Target).Returns( new Mock<IUObject>().Object ); 
