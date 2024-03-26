@@ -1,22 +1,44 @@
+using Hwdtech;
+
 namespace Spacebattle.Lib;
 
 public class SoftStopCommand: ICommand
 {
-    private readonly HardStopCommand _hsc;
-    private ServerThread _sv;
-    public SoftStopCommand(HardStopCommand hsc, ServerThread sv) 
+    private readonly UActionCommand _hsc;
+    private readonly ServerThread _st;
+    readonly Action softStopStrategy;
+    public SoftStopCommand(UActionCommand hsc, ServerThread st) 
     {
         _hsc = hsc;
-        _sv = sv;
+        _st = st;
+
+        softStopStrategy = () => 
+        {
+            if (!_st._q.TryTake(out var cmd))
+            {   
+                _hsc.Execute();
+            }
+            try 
+            {   
+                cmd!.Execute();
+            }
+            catch (Exception e) 
+            {
+                IoC.Resolve<ICommand>("Exception.Handle", cmd!, e).Execute();
+            }
+            
+        };
     } 
     public void Execute() 
     {
-        // queue executes till the very last
-        if (!_sv._q.TryTake(out var cmd)) return; 
+        if (_st.Equals(Thread.CurrentThread)) 
+            {
+                _st.UpdateStrategy(softStopStrategy);
+            } 
+        else 
+            {  
+                throw new Exception("WRONG THREAD!");
+            }
 
-        _hsc.Execute();
-
-        // ServerThread.Stop();
     }
-
 }
