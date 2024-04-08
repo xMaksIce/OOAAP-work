@@ -4,7 +4,7 @@ using Hwdtech;
 namespace Spacebattle.Lib;
 
 
-public class ServerThread 
+public class ServerThread: IDisposable
 {
     private Thread _t;
     internal readonly BlockingCollection<ICommand> _q;
@@ -38,7 +38,15 @@ public class ServerThread
         });
         
     }
+    public bool isTerminated()
+    {
+        return !_t.IsAlive; 
+    }
     
+    public void Dispose()
+    {
+        _t.Join();
+    }
     public override bool Equals(object? obj)
     {
         if (obj == null)

@@ -132,7 +132,14 @@ public class ServerThreadTest
 
         Assert.Single(q);
 
+        using (var thread = IoC.Resolve<ServerThread>($"ServerThread.{id}"))
+        {
+            
+        }
+
+        Assert.True(st.isTerminated());
         cmd.Verify(m => m.Execute(), Times.Once());
+
 
     }
 
@@ -216,6 +223,11 @@ public class ServerThreadTest
         IoC.Resolve<Lib.ICommand>("Send Command", id, hs).Execute();
         mre.WaitOne();
 
+        using (var thread = IoC.Resolve<ServerThread>($"ServerThread.{id}"))
+        {
+
+        }
+        Assert.True(st.isTerminated());
     }
 
     [Fact]
@@ -267,6 +279,12 @@ public class ServerThreadTest
 
         cmd.Verify(m => m.Execute(), Times.Exactly(2));
 
+        using (var thread = IoC.Resolve<ServerThread>($"ServerThread.{id}"))
+        {
+
+        }
+        Assert.True(st.isTerminated());
+
     }
     
     [Fact]
@@ -313,6 +331,11 @@ public class ServerThreadTest
 
         mre.WaitOne();
 
+        using (var thread = IoC.Resolve<ServerThread>($"ServerThread.{id}"))
+        {
+
+        }
+        Assert.True(st.isTerminated());
     }
 
     [Fact]
@@ -334,6 +357,12 @@ public class ServerThreadTest
 
         mre.WaitOne();
 
+        using (var thread = IoC.Resolve<ServerThread>($"ServerThread.{id}"))
+        {
+
+        }
+        Assert.True(st.isTerminated());
+
     }
 
     [Fact]
@@ -353,7 +382,11 @@ public class ServerThreadTest
         IoC.Resolve<Lib.ICommand>("Send Command", id, hs).Execute();
 
         mre.WaitOne();
+        using (var thread = IoC.Resolve<ServerThread>($"ServerThread.{id}"))
+        {
 
+        }
+        Assert.True(st.isTerminated());
     }
 
     [Fact]
@@ -394,7 +427,11 @@ public class ServerThreadTest
 
         mre.WaitOne();
         
+        using (var thread = IoC.Resolve<ServerThread>($"ServerThread.{id}"))
+        {
 
+        }
+        Assert.True(st.isTerminated());
     }
 
     [Fact]
@@ -414,6 +451,10 @@ public class ServerThreadTest
 
         mre.WaitOne();
 
-        
+        using (var thread = IoC.Resolve<ServerThread>($"ServerThread.{id}"))
+        {
+
+        }
+        Assert.True(st.isTerminated());
     }
 }
