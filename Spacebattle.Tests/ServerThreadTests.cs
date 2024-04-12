@@ -32,7 +32,20 @@ public class ServerThreadTest
                                 return queue;
                             }).Execute();
 
-                        var thread = new ServerThread(queue);
+                        Action beforeThread = () =>
+                        {
+                            IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set",
+                                IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root"))
+                            ).Execute();
+                        };
+                        Action? afterThread = null;
+                        if (args.Length == 2)
+                        {
+                            afterThread = (Action) args[1]; 
+
+                        }
+
+                        var thread = new ServerThread(queue, beforeThread, afterThread);
                         IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
                             $"ServerThread.{id}", (object[] args) =>
                             {
@@ -96,7 +109,7 @@ public class ServerThreadTest
         // Arrange
         Guid id = Guid.NewGuid();
 
-        IoC.Resolve<Lib.ICommand>("Create And Start Thread", id).Execute();
+        IoC.Resolve<Lib.ICommand>("Create And Start Thread", id, () => {}).Execute();
         
         var q = IoC.Resolve<BlockingCollection<Lib.ICommand>>($"ServerThread.Queue.{id}"); 
         var st = IoC.Resolve<ServerThread>($"ServerThread.{id}");
@@ -106,21 +119,15 @@ public class ServerThreadTest
 
         var hs = IoC.Resolve<Lib.ICommand>("Hard Stop The Thread", st, () => { mre.Set(); });
 
-        IoC.Resolve<Lib.ICommand>("Send Command", id, 
-            new UActionCommand(() =>
-                {
-                    IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set",
-                        IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root"))).Execute();
-                })).Execute();
-
         var handleCommand = new Mock<Lib.ICommand>();
         handleCommand.Setup(m => m.Execute()).Verifiable();
-        
+
         IoC.Resolve<Lib.ICommand>("Send Command", id,
                 new UActionCommand(() =>
                 {
                 IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
-                    "Exception.Handle", (object[] args) => handleCommand.Object).Execute();
+                    "Exception.Handle", (object[] args) => handleCommand.Object
+                ).Execute();
                 })
             ).Execute();        
 
@@ -164,15 +171,6 @@ public class ServerThreadTest
 
         var cmdE = new Mock<Lib.ICommand>();
         cmdE.Setup(m => m.Execute()).Throws<Exception>().Verifiable();
-
-        IoC.Resolve<Lib.ICommand>("Send Command", id, 
-            new UActionCommand(() =>
-                {
-                    IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set",
-                        IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root"))).Execute();
-                })
-        ).Execute(); 
-             
 
         var handleCommand = new Mock<Lib.ICommand>();
         handleCommand.Setup(m => m.Execute()).Verifiable();
@@ -251,13 +249,6 @@ public class ServerThreadTest
 
         var ss = IoC.Resolve<Lib.ICommand>("Soft Stop The Thread", hs, st );
 
-        IoC.Resolve<Lib.ICommand>("Send Command", id, 
-            new UActionCommand(() =>
-                {
-                    IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set",
-                        IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root"))).Execute();
-                })).Execute();
-
         var handleCommand = new Mock<Lib.ICommand>();
         handleCommand.Setup(m => m.Execute()).Verifiable();
 
@@ -303,13 +294,6 @@ public class ServerThreadTest
         var handleCommand = new Mock<Lib.ICommand>();
         handleCommand.Setup(m => m.Execute()).Verifiable();
         
-
-        IoC.Resolve<Lib.ICommand>("Send Command", id, 
-            new UActionCommand(() =>
-                {
-                    IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set",
-                        IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root"))).Execute();
-                })).Execute();
         IoC.Resolve<Lib.ICommand>("Send Command", id,
                 new UActionCommand(() =>
                 {
@@ -407,12 +391,6 @@ public class ServerThreadTest
         var handleCommand = new Mock<Lib.ICommand>();
         handleCommand.Setup(m => m.Execute()).Verifiable();
 
-        IoC.Resolve<Lib.ICommand>("Send Command", id, 
-            new UActionCommand(() =>
-                {
-                    IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set",
-                        IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root"))).Execute();
-                })).Execute();
         IoC.Resolve<Lib.ICommand>("Send Command", id,
                 new UActionCommand(() =>
                 {

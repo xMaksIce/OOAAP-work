@@ -11,7 +11,9 @@ public class ServerThread: IDisposable
     private bool stop = false;
     private Action strategy;  
     private Action defaultStrategy;
-    public ServerThread(BlockingCollection<ICommand> q) 
+    Action afterThread = () => {};
+
+    public ServerThread(BlockingCollection<ICommand> q, Action beforeThread, Action? afterThread=null) 
     {
         _q = q;
         defaultStrategy = () => {
@@ -27,14 +29,19 @@ public class ServerThread: IDisposable
 
         };
 
-
         strategy = defaultStrategy;
 
+        if (afterThread != null) this.afterThread = afterThread;
+
         _t = new Thread(() => {
+            beforeThread();
+
             while(!stop) 
             {
                 strategy(); 
             }
+            
+            this.afterThread();
         });
         
     }
