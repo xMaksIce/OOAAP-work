@@ -105,8 +105,7 @@ public class ServerThreadTest
     public void HardStopCommandShouldStopServerThread()
     {
         var mre = new ManualResetEvent(false);
-        // AAA
-        // Arrange
+
         Guid id = Guid.NewGuid();
 
         IoC.Resolve<Lib.ICommand>("Create And Start Thread", id, () => {}).Execute();
@@ -153,8 +152,6 @@ public class ServerThreadTest
     [Fact]
     public void ExceptionCommandShouldNotStopServerThread()
     {
-        // AAA
-        // Arrange
         var mre = new ManualResetEvent(false);
         Guid id = Guid.NewGuid();
 
@@ -191,14 +188,19 @@ public class ServerThreadTest
 
         mre.WaitOne();
 
-        // Assert
+        
         Assert.Single(q);
         cmdE.Verify(c => c.Execute(), Times.Once);
 
         cmd.Verify(m => m.Execute(), Times.Exactly(2));
         handleCommand.Verify(m => m.Execute(), Times.Once());
 
+        using (var thread = IoC.Resolve<ServerThread>($"ServerThread.{id}"))
+        {
+            
+        }
 
+        Assert.True(st.isTerminated());
     }
 
     [Fact]
@@ -232,9 +234,7 @@ public class ServerThreadTest
     public void SoftStopCommandShouldStopServerThread()
     {
         var mre = new ManualResetEvent(false);
-        // AAA
-        // Arrange
-        // new Queue
+
         Guid id = Guid.NewGuid();
 
         IoC.Resolve<Lib.ICommand>("Create And Start Thread", id).Execute();
