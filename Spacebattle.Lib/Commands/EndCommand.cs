@@ -11,7 +11,7 @@ public interface IMoveEndable
 public class EndMoveCommand
 {
     private IMoveEndable endableCommand;
-    public EndMoveCommand(IMoveEndable command){ endableCommand = command; }
+    public EndMoveCommand(IMoveEndable command) { endableCommand = command; }
     public void Execute()
     {
         IoC.Resolve<string>("Game.Object.DeleteProperty", endableCommand.Object, endableCommand.Property);

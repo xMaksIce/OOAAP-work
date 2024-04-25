@@ -8,7 +8,7 @@ public interface IVectorslike
     public List<List<int>> ToActualVectors();
 }
 
-public class BuildTree: ICommand
+public class BuildTree : ICommand
 {
     private readonly IVectorslike _rawVectors;
     public BuildTree(IVectorslike vectorslike)
@@ -30,7 +30,7 @@ public class BuildTree: ICommand
             {
                 bool checkKey = tree.ContainsKey(branch);
                 growTreeByCondition[checkKey].Invoke(tree, branch);
-                tree = (Hashtable?) tree[branch];
+                tree = (Hashtable?)tree[branch];
             });
         });
     }

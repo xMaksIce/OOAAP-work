@@ -4,25 +4,26 @@ using Hwdtech;
 namespace Spacebattle.Lib;
 
 
-public class ServerThread: IDisposable
+public class ServerThread : IDisposable
 {
     private Thread _t;
     internal readonly BlockingCollection<ICommand> _q;
     private bool stop = false;
-    private Action strategy;  
+    private Action strategy;
     private Action defaultStrategy;
-    Action afterThread = () => {};
+    Action afterThread = () => { };
 
-    public ServerThread(BlockingCollection<ICommand> q, Action beforeThread, Action? afterThread=null) 
+    public ServerThread(BlockingCollection<ICommand> q, Action beforeThread, Action? afterThread = null)
     {
         _q = q;
-        defaultStrategy = () => {
+        defaultStrategy = () =>
+        {
             var cmd = _q.Take();
-            try 
+            try
             {
                 cmd.Execute();
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 IoC.Resolve<ICommand>("Exception.Handle", cmd, e).Execute();
             }
@@ -33,23 +34,24 @@ public class ServerThread: IDisposable
 
         if (afterThread != null) this.afterThread = afterThread;
 
-        _t = new Thread(() => {
+        _t = new Thread(() =>
+        {
             beforeThread();
 
-            while(!stop) 
+            while (!stop)
             {
-                strategy(); 
+                strategy();
             }
-            
+
             this.afterThread();
         });
-        
+
     }
     public bool isTerminated()
     {
-        return !_t.IsAlive; 
+        return !_t.IsAlive;
     }
-    
+
     public void Dispose()
     {
         _t.Join();
@@ -71,16 +73,19 @@ public class ServerThread: IDisposable
     {
         return base.GetHashCode();
     }
-    
-    public void Start() {
+
+    public void Start()
+    {
         _t.Start();
     }
 
-    internal void Stop() { 
+    internal void Stop()
+    {
         stop = true;
-        
+
     }
-    internal void UpdateStrategy(Action newStrat) {
+    internal void UpdateStrategy(Action newStrat)
+    {
         strategy = newStrat;
     }
 }

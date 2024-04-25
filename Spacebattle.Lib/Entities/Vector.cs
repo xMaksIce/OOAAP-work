@@ -4,7 +4,7 @@ public class Vector
 {
     private readonly int[] _values;
     public int Size => _values.Length;
-    
+
     public Vector(params int[] values)
     {
         _values = values ?? throw new ArgumentNullException(nameof(values));
@@ -32,15 +32,15 @@ public class Vector
     {
         var resultValue = left._values.Concat(right._values).ToArray();
         var resultVector = new Vector(resultValue);
-        
-        return resultVector; 
+
+        return resultVector;
     }
 
     public static IEnumerator<int> GetEnumerator(Vector v)
     {
         var array = v._values;
 
-        return ((IEnumerable<int>)array).GetEnumerator(); 
+        return ((IEnumerable<int>)array).GetEnumerator();
     }
 
     public override bool Equals(object? obj)

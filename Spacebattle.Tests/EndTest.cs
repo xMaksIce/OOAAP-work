@@ -22,7 +22,9 @@ public class EndCommandTests
             properties.ForEach(prop => gameObj.DeleteProperty(prop));
             return "";
         }).Execute();
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.End", (object[] args) => { return new EndMoveCommand((IMoveEndable)args[0]);
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.End", (object[] args) =>
+        {
+            return new EndMoveCommand((IMoveEndable)args[0]);
         }).Execute();
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.DummyCommand", (object[] args) => new DummyCommand()).Execute();
     }
@@ -45,12 +47,12 @@ public class EndCommandTests
         var endableCmd = new Mock<IMoveEndable>();
         var bridgeCmd = new BridgeCommand(cmd.Object);
         var gameObj = new Mock<UObject>();
-        var propNames = new List<string> {"Velocity"};
+        var propNames = new List<string> { "Velocity" };
         var props = new Dictionary<string, object>();
         gameObj.Setup(o => o.SetProperty(It.IsAny<string>(), It.IsAny<object>())).Callback<string, object>(props.Add);
         gameObj.Setup(o => o.GetProperty(It.IsAny<string>())).Returns<string>(key => props[key]);
         gameObj.Setup(o => o.DeleteProperty(It.IsAny<string>())).Callback<string>(key => props.Remove(key));
-        gameObj.Object.SetProperty("Velocity", new int[] {12, 7});
+        gameObj.Object.SetProperty("Velocity", new int[] { 12, 7 });
         endableCmd.SetupGet(c => c.Command).Returns(bridgeCmd);
         endableCmd.SetupGet(c => c.Object).Returns(gameObj.Object);
         endableCmd.SetupGet(c => c.Property).Returns(propNames);

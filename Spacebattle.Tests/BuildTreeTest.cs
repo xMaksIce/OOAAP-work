@@ -30,7 +30,7 @@ public class BuildTreeTests
                 }
             }}
         }};
-        
+
         bool HashtablesEqual(Hashtable table1, Hashtable table2)
         {
             return table1.Count == table2.Count &&              // сравниваем кол-во ветвлений на текущем уровне

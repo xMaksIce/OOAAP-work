@@ -58,7 +58,7 @@ public class CollisionStrategy
             (Vector)obj2.GetProperty("Position") -
             (Vector)obj1.GetProperty("Position");
 
-         var relativeVector =  Vector.Concat(positionVector, velocityVector); 
+        var relativeVector = Vector.Concat(positionVector, velocityVector);
 
         return Vector.GetEnumerator(relativeVector);
     }

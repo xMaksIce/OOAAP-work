@@ -1,5 +1,5 @@
 namespace Spacebattle.Lib;
-public class UActionCommand: ICommand
+public class UActionCommand : ICommand
 {
     private readonly Action _action;
     public UActionCommand(Action action)
