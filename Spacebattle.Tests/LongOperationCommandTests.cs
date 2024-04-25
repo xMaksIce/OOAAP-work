@@ -16,8 +16,8 @@ public class MacroCommandTests
 
         var moveCommandStartable = new Mock<IMoveCommandStartable>();
 
-        moveCommandStartable.SetupGet(mcs => mcs.Target).Returns( new Mock<IUObject>().Object );
-        moveCommandStartable.SetupGet(mcs => mcs.Property).Returns( new Dictionary<string, object>() );
+        moveCommandStartable.SetupGet(mcs => mcs.Target).Returns(new Mock<IUObject>().Object);
+        moveCommandStartable.SetupGet(mcs => mcs.Property).Returns(new Dictionary<string, object>());
 
         string dependencyName = "Rotate";
 
@@ -48,9 +48,10 @@ public class MacroCommandTests
         ).Execute();
 
         IoC.Resolve<Hwdtech.ICommand>(
-            "IoC.Register", 
-            "Game.Commands.MacroCommand", 
-            (object[] args)=> {
+            "IoC.Register",
+            "Game.Commands.MacroCommand",
+            (object[] args) =>
+            {
                 return macroCommand;
             }
         ).Execute();
@@ -72,7 +73,7 @@ public class MacroCommandTests
                 return qMock.Object;
             }
         ).Execute();
-    
+
 
         startMacroCommand.Execute();
 

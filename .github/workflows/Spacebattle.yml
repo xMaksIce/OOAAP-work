@@ -22,3 +22,5 @@ jobs:
       
       - name: SpacebattleTests
         run: dotnet test /p:CollectCoverage=true 
+      - name: FormatCheck
+        run: dotnet format --verify-no-changes

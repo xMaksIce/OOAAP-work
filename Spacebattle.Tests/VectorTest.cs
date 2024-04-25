@@ -50,9 +50,9 @@ public class VectorTest
     {
         Vector a = new(12, 7, 3);
         Vector b = new(10, 5, 1);
-        
+
         Vector expected = new(2, 2, 2);
-        Vector actual = a-b;
+        Vector actual = a - b;
 
         Assert.Equal(expected, actual);
     }
@@ -62,19 +62,19 @@ public class VectorTest
     {
         Vector a = new(1, 2);
         Vector b = new(3, 4, 5);
-        
+
         Vector expected = new(1, 2, 3, 4, 5);
-        Vector actual = Vector.Concat(a,b);
+        Vector actual = Vector.Concat(a, b);
 
         Assert.Equal(expected, actual);
     }
 
-     [Fact]
+    [Fact]
     public void GetVectorEnumerator()
     {
-        int[] initialArray = new int[] {1,2};
+        int[] initialArray = new int[] { 1, 2 };
         Vector v = new Vector(initialArray);
-        
+
         IEnumerator expected = ((IEnumerable<int>)initialArray).GetEnumerator();
         var actual = Vector.GetEnumerator(v);
 

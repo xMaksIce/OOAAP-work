@@ -15,7 +15,7 @@ public class ServerThreadTest
             IoC.Resolve<object>("Scopes.New",
                 IoC.Resolve<object>("Scopes.Root")
             )
-        ).Execute();        
+        ).Execute();
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
             "Create And Start Thread", (object[] args) =>
@@ -23,7 +23,7 @@ public class ServerThreadTest
                 return new UActionCommand(
                     () =>
                     {
-                        Guid id = (Guid) args[0];
+                        Guid id = (Guid)args[0];
 
                         var queue = new BlockingCollection<Lib.ICommand>();
                         IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
@@ -41,7 +41,7 @@ public class ServerThreadTest
                         Action? afterThread = null;
                         if (args.Length == 2)
                         {
-                            afterThread = (Action) args[1]; 
+                            afterThread = (Action)args[1];
 
                         }
 
@@ -63,8 +63,8 @@ public class ServerThreadTest
             {
                 return new UActionCommand(() =>
                     {
-                        IoC.Resolve<BlockingCollection<Lib.ICommand>>($"ServerThread.Queue.{(Guid) args[0]}")
-                            .Add((Lib.ICommand) args[1]);
+                        IoC.Resolve<BlockingCollection<Lib.ICommand>>($"ServerThread.Queue.{(Guid)args[0]}")
+                            .Add((Lib.ICommand)args[1]);
                     }
                 );
             }).Execute();
@@ -76,24 +76,24 @@ public class ServerThreadTest
                 return new UActionCommand(
                 () =>
                 {
-                    new HardStopCommand((ServerThread) args[0]).Execute();
+                    new HardStopCommand((ServerThread)args[0]).Execute();
                     if (args.Length == 2)
                         new UActionCommand((Action)args[1]).Execute();
                 });
             }
         ).Execute();
 
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", 
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
             "Soft Stop The Thread",
-                (object[] args) => 
+                (object[] args) =>
                 {
                     return new UActionCommand(
-                        () => 
+                        () =>
                         {
-                            new SoftStopCommand((UActionCommand) args[0], (ServerThread) args[1]).Execute();
-                            
-                            if (args.Length == 3) 
-                            new UActionCommand((Action) args[2]).Execute();
+                            new SoftStopCommand((UActionCommand)args[0], (ServerThread)args[1]).Execute();
+
+                            if (args.Length == 3)
+                                new UActionCommand((Action)args[2]).Execute();
                         }
                     );
                 }
@@ -108,9 +108,9 @@ public class ServerThreadTest
 
         Guid id = Guid.NewGuid();
 
-        IoC.Resolve<Lib.ICommand>("Create And Start Thread", id, () => {}).Execute();
-        
-        var q = IoC.Resolve<BlockingCollection<Lib.ICommand>>($"ServerThread.Queue.{id}"); 
+        IoC.Resolve<Lib.ICommand>("Create And Start Thread", id, () => { }).Execute();
+
+        var q = IoC.Resolve<BlockingCollection<Lib.ICommand>>($"ServerThread.Queue.{id}");
         var st = IoC.Resolve<ServerThread>($"ServerThread.{id}");
 
         var cmd = new Mock<Lib.ICommand>();
@@ -124,11 +124,11 @@ public class ServerThreadTest
         IoC.Resolve<Lib.ICommand>("Send Command", id,
                 new UActionCommand(() =>
                 {
-                IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
-                    "Exception.Handle", (object[] args) => handleCommand.Object
-                ).Execute();
+                    IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
+                        "Exception.Handle", (object[] args) => handleCommand.Object
+                    ).Execute();
                 })
-            ).Execute();        
+            ).Execute();
 
         IoC.Resolve<Lib.ICommand>("Send Command", id, cmd.Object).Execute();
         IoC.Resolve<Lib.ICommand>("Send Command", id, hs).Execute();
@@ -140,7 +140,7 @@ public class ServerThreadTest
 
         using (var thread = IoC.Resolve<ServerThread>($"ServerThread.{id}"))
         {
-            
+
         }
 
         Assert.True(st.isTerminated());
@@ -157,7 +157,7 @@ public class ServerThreadTest
 
         IoC.Resolve<Lib.ICommand>("Create And Start Thread", id).Execute();
 
-        var q = IoC.Resolve<BlockingCollection<Lib.ICommand>>($"ServerThread.Queue.{id}"); 
+        var q = IoC.Resolve<BlockingCollection<Lib.ICommand>>($"ServerThread.Queue.{id}");
 
         var st = IoC.Resolve<ServerThread>($"ServerThread.{id}");
 
@@ -172,13 +172,13 @@ public class ServerThreadTest
         var handleCommand = new Mock<Lib.ICommand>();
         handleCommand.Setup(m => m.Execute()).Verifiable();
 
-        IoC.Resolve<Lib.ICommand>("Send Command", id, 
+        IoC.Resolve<Lib.ICommand>("Send Command", id,
             new UActionCommand(() =>
             {
                 IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
                     "Exception.Handle", (object[] args) => handleCommand.Object).Execute();
             })
-        ).Execute(); 
+        ).Execute();
 
         IoC.Resolve<Lib.ICommand>("Send Command", id, cmd.Object).Execute();
         IoC.Resolve<Lib.ICommand>("Send Command", id, cmdE.Object).Execute();
@@ -188,7 +188,7 @@ public class ServerThreadTest
 
         mre.WaitOne();
 
-        
+
         Assert.Single(q);
         cmdE.Verify(c => c.Execute(), Times.Once);
 
@@ -197,7 +197,7 @@ public class ServerThreadTest
 
         using (var thread = IoC.Resolve<ServerThread>($"ServerThread.{id}"))
         {
-            
+
         }
 
         Assert.True(st.isTerminated());
@@ -208,9 +208,9 @@ public class ServerThreadTest
     {
         var mre = new ManualResetEvent(false);
         Guid id = Guid.NewGuid();
-        
+
         IoC.Resolve<Lib.ICommand>("Create And Start Thread", id).Execute();
-        
+
         var st = IoC.Resolve<ServerThread>($"ServerThread.{id}");
 
         var hs = IoC.Resolve<Lib.ICommand>("Hard Stop The Thread", st, () => { mre.Set(); });
@@ -239,7 +239,7 @@ public class ServerThreadTest
 
         IoC.Resolve<Lib.ICommand>("Create And Start Thread", id).Execute();
 
-        var q = IoC.Resolve<BlockingCollection<Lib.ICommand>>($"ServerThread.Queue.{id}"); 
+        var q = IoC.Resolve<BlockingCollection<Lib.ICommand>>($"ServerThread.Queue.{id}");
         var st = IoC.Resolve<ServerThread>($"ServerThread.{id}");
 
         var cmd = new Mock<Lib.ICommand>();
@@ -247,7 +247,7 @@ public class ServerThreadTest
 
         var hs = IoC.Resolve<Lib.ICommand>("Hard Stop The Thread", st, () => { mre.Set(); });
 
-        var ss = IoC.Resolve<Lib.ICommand>("Soft Stop The Thread", hs, st );
+        var ss = IoC.Resolve<Lib.ICommand>("Soft Stop The Thread", hs, st);
 
         var handleCommand = new Mock<Lib.ICommand>();
         handleCommand.Setup(m => m.Execute()).Verifiable();
@@ -255,11 +255,11 @@ public class ServerThreadTest
         IoC.Resolve<Lib.ICommand>("Send Command", id,
                 new UActionCommand(() =>
                 {
-                IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
-                    "Exception.Handle", (object[] args) => handleCommand.Object).Execute();
+                    IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
+                        "Exception.Handle", (object[] args) => handleCommand.Object).Execute();
                 })
-            ).Execute();        
-        
+            ).Execute();
+
         IoC.Resolve<Lib.ICommand>("Send Command", id, ss).Execute();
         IoC.Resolve<Lib.ICommand>("Send Command", id, cmd.Object).Execute();
         IoC.Resolve<Lib.ICommand>("Send Command", id, cmd.Object).Execute();
@@ -277,30 +277,30 @@ public class ServerThreadTest
         Assert.True(st.isTerminated());
 
     }
-    
+
     [Fact]
     public void SoftStopCommandExecutesNotInTheThreadItShouldStop()
     {
-        var mre = new ManualResetEvent(false); 
+        var mre = new ManualResetEvent(false);
         Guid id = Guid.NewGuid();
 
         IoC.Resolve<Lib.ICommand>("Create And Start Thread", id).Execute();
 
         var st = IoC.Resolve<ServerThread>($"ServerThread.{id}");
 
-        var hs = IoC.Resolve<Lib.ICommand>("Hard Stop The Thread", st, () => {mre.Set();});
+        var hs = IoC.Resolve<Lib.ICommand>("Hard Stop The Thread", st, () => { mre.Set(); });
         var ss = IoC.Resolve<Lib.ICommand>("Soft Stop The Thread", hs, st);
-        
+
         var handleCommand = new Mock<Lib.ICommand>();
         handleCommand.Setup(m => m.Execute()).Verifiable();
-        
+
         IoC.Resolve<Lib.ICommand>("Send Command", id,
                 new UActionCommand(() =>
                 {
-                IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
-                    "Exception.Handle", (object[] args) => handleCommand.Object).Execute();
+                    IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
+                        "Exception.Handle", (object[] args) => handleCommand.Object).Execute();
                 })
-            ).Execute();   
+            ).Execute();
 
         Assert.Throws<Exception>(() =>
             {
@@ -329,11 +329,11 @@ public class ServerThreadTest
         Guid id = Guid.NewGuid();
 
         IoC.Resolve<Lib.ICommand>("Create And Start Thread", id).Execute();
- 
+
         var st = IoC.Resolve<ServerThread>($"ServerThread.{id}");
 
         Guid anotherSt = Guid.NewGuid();
-        var hs = IoC.Resolve<Lib.ICommand>("Hard Stop The Thread", st, () => {mre.Set();});
+        var hs = IoC.Resolve<Lib.ICommand>("Hard Stop The Thread", st, () => { mre.Set(); });
 
         Assert.False(st.Equals(anotherSt));
 
@@ -352,14 +352,14 @@ public class ServerThreadTest
     [Fact]
     public void DifferentThreadsHaveDiffHashCode()
     {
-        var mre = new ManualResetEvent(false); 
+        var mre = new ManualResetEvent(false);
         Guid id = Guid.NewGuid();
 
         IoC.Resolve<Lib.ICommand>("Create And Start Thread", id).Execute();
         var st = IoC.Resolve<ServerThread>($"ServerThread.{id}");
-        
+
         var anotherThreadHashCode = 0;
-        var hs = IoC.Resolve<Lib.ICommand>("Hard Stop The Thread", st, () => {mre.Set();});
+        var hs = IoC.Resolve<Lib.ICommand>("Hard Stop The Thread", st, () => { mre.Set(); });
 
         Assert.True(st.GetHashCode() != anotherThreadHashCode);
 
@@ -380,11 +380,12 @@ public class ServerThreadTest
         Guid id = Guid.NewGuid();
 
         IoC.Resolve<Lib.ICommand>("Create And Start Thread", id).Execute();
-        
+
         var st = IoC.Resolve<ServerThread>($"ServerThread.{id}");
-        var hs = IoC.Resolve<Lib.ICommand>("Hard Stop The Thread", st, () => {mre.Set();});
-        
-        var checkCmd = new UActionCommand ( () => {
+        var hs = IoC.Resolve<Lib.ICommand>("Hard Stop The Thread", st, () => { mre.Set(); });
+
+        var checkCmd = new UActionCommand(() =>
+        {
             Assert.False(st.Equals(Thread.CurrentThread));
         });
 
@@ -394,8 +395,8 @@ public class ServerThreadTest
         IoC.Resolve<Lib.ICommand>("Send Command", id,
                 new UActionCommand(() =>
                 {
-                IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
-                    "Exception.Handle", (object[] args) => handleCommand.Object).Execute();
+                    IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
+                        "Exception.Handle", (object[] args) => handleCommand.Object).Execute();
                 })
             ).Execute();
 
@@ -404,7 +405,7 @@ public class ServerThreadTest
         IoC.Resolve<Lib.ICommand>("Send Command", id, hs).Execute();
 
         mre.WaitOne();
-        
+
         using (var thread = IoC.Resolve<ServerThread>($"ServerThread.{id}"))
         {
 
@@ -421,8 +422,8 @@ public class ServerThreadTest
         IoC.Resolve<Lib.ICommand>("Create And Start Thread", id).Execute();
         var st = IoC.Resolve<ServerThread>($"ServerThread.{id}");
 
-        var hs = IoC.Resolve<Lib.ICommand>("Hard Stop The Thread", st, () => {mre.Set();});
-        
+        var hs = IoC.Resolve<Lib.ICommand>("Hard Stop The Thread", st, () => { mre.Set(); });
+
         Assert.False(st.Equals(null));
 
         IoC.Resolve<Lib.ICommand>("Send Command", id, hs).Execute();

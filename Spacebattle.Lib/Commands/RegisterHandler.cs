@@ -5,9 +5,9 @@ namespace Spacebattle.Lib;
 
 public class RegisterExceptionHandler : ICommand
 {
-    private readonly IEnumerable<object> cmdOrExcTrail; 
+    private readonly IEnumerable<object> cmdOrExcTrail;
     private readonly ICommand handler;
-    public RegisterExceptionHandler(IEnumerable<object> cmdOrExcTrail, ICommand handler) 
+    public RegisterExceptionHandler(IEnumerable<object> cmdOrExcTrail, ICommand handler)
     {
         this.cmdOrExcTrail = cmdOrExcTrail;
         this.handler = handler;
@@ -19,11 +19,11 @@ public class RegisterExceptionHandler : ICommand
 
         Dictionary<bool, Action<Type>> branching = new(){
             {true, new Action<Type>((nodeType) => {
-                if (!tree.ContainsKey(nodeType)) 
+                if (!tree.ContainsKey(nodeType))
                     tree.Add(nodeType, new Hashtable());
                 tree = (Hashtable?) tree[nodeType];})},
             {false, new Action<Type>((nodeType) => {
-                if (!tree.ContainsKey(nodeType)) 
+                if (!tree.ContainsKey(nodeType))
                     tree.Add(nodeType, handler);})}};
 
         cmdOrExcTrail.ToList().ForEach((node) =>
