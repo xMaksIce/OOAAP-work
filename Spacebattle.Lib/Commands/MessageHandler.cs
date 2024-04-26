@@ -3,12 +3,12 @@ using Hwdtech;
 
 namespace Spacebattle.Lib;
 
-public class MessageObject
+public interface MessageObject
 {
-    public string? Type { get; }
-    public virtual int GameID { get; }
+    public string Type { get; }
+    public int GameID { get; }
     public int ItemID { get; }
-    public Hashtable? Parameters { get; }
+    public Hashtable Parameters { get; }
 }
 public class InterpretMessage : ICommand
 {
