@@ -4,6 +4,10 @@ using CoreWCF.Configuration;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Xml;
 
+using System.Diagnostics.CodeAnalysis;
+[assembly: ExcludeFromCodeCoverage]
+
+
 namespace Spacebattle.Server;
 internal sealed class Startup
 {

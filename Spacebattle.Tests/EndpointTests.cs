@@ -1,6 +1,7 @@
 using Hwdtech;
 using Hwdtech.Ioc;
 using Moq;
+using Spacebattle.Server;
 
 namespace Spacebattle.Tests;
 public class EndpointTests
