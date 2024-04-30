@@ -26,7 +26,7 @@ internal sealed class Startup
 
         app.UseServiceModel(builder =>
         {
-            
+
             var readerQuoates = new XmlDictionaryReaderQuotas
             {
                 MaxBytesPerRead = 4096,

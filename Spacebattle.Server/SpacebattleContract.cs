@@ -24,5 +24,5 @@ namespace Spacebattle.Server
         [OpenApiProperty(Description = "Params description.")]
         public required IDictionary<string, object> GameParameters { get; set; }
     }
-    
+
 }
