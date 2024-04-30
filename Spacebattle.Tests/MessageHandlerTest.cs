@@ -22,8 +22,8 @@ public class MessageHandlerTest
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.TakeMessageFromQueue", (object[] args) => messageObj.Object).Execute();
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.PutCommandInQueue", (object[] args) => args[0]).Execute();
-
-        new CreateInterpretation().Execute();
+        int queueID = 0;
+        new CreateInterpretation(queueID).Execute();
         command.Verify(cmd => cmd.Execute(), Times.Once);
     }
     [Fact]
@@ -38,8 +38,8 @@ public class MessageHandlerTest
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.TakeMessageFromQueue", (object[] args) => messageObj.Object).Execute();
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.PutCommandInQueue", (object[] args) => args[0]).Execute();
-
-        var createInterpretation = new CreateInterpretation();
+        int queueID = 0;
+        var createInterpretation = new CreateInterpretation(queueID);
         Assert.Throws<ArgumentException>(createInterpretation.Execute);
     }
     [Fact]
@@ -53,8 +53,8 @@ public class MessageHandlerTest
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.TakeMessageFromQueue", (object[] args) => messageObj.Object).Execute();
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.PutCommandInQueue", (object[] args) => args[0]).Execute();
-
-        var createInterpretation = new CreateInterpretation();
+        int queueID = 0;
+        var createInterpretation = new CreateInterpretation(queueID);
         Assert.Throws<Exception>(createInterpretation.Execute);
     }
 }
