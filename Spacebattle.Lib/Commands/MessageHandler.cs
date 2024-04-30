@@ -28,7 +28,7 @@ public class CreateInterpretation : ICommand
     private readonly int _queueID;
     public CreateInterpretation(int queueID)
     {
-        _queueID = queueID; 
+        _queueID = queueID;
     }
     public void Execute()
     {
