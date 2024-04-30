@@ -25,9 +25,14 @@ public class InterpretMessage : ICommand
 }
 public class CreateInterpretation : ICommand
 {
+    private readonly int _queueID;
+    public CreateInterpretation(int queueID)
+    {
+        _queueID = queueID; 
+    }
     public void Execute()
     {
-        var messageObject = IoC.Resolve<MessageObject>("Game.TakeMessageFromQueue");
+        var messageObject = IoC.Resolve<MessageObject>("Game.TakeMessageFromQueue", _queueID);
         var interpretation = new InterpretMessage(messageObject);
         IoC.Resolve<ICommand>("Game.PutCommandInQueue", interpretation, messageObject.GameID).Execute();
     }
