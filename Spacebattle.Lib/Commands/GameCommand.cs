@@ -15,17 +15,17 @@ public class GameCommand : ICommand
         IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set",
             IoC.Resolve<object>("Scopes.New", _scope)
         ).Execute();
-        var timeQuantum = (int) IoC.Resolve<object>("GameCommand.TimeQuantum");
+        var timeQuantum = (int)IoC.Resolve<object>("GameCommand.TimeQuantum");
         var time = System.Diagnostics.Stopwatch.StartNew();
-        
+
         while (time.ElapsedMilliseconds < timeQuantum)
         {
-            if (!_q.TryDequeue(out var cmd)) return; 
+            if (!_q.TryDequeue(out var cmd)) return;
             try
             {
                 cmd.Execute();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 IoC.Resolve<ICommand>("Exception.Handle", e, cmd).Execute();
             }

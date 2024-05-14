@@ -3,7 +3,8 @@ using Hwdtech.Ioc;
 using Moq;
 
 namespace Spacebattle.Tests;
-public class GameCommandTests{
+public class GameCommandTests
+{
     public GameCommandTests()
     {
         new InitScopeBasedIoCImplementationCommand().Execute();
@@ -17,10 +18,10 @@ public class GameCommandTests{
         var scope = IoC.Resolve<object>("Scopes.Current");
         int timeQ = 10_000;
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GameCommand.TimeQuantum",
-            (object[] args) => (object) timeQ
+            (object[] args) => (object)timeQ
         ).Execute();
         var goodHandleCmd = new Mock<Lib.ICommand>();
-        goodHandleCmd.Setup(c => c.Execute()).Verifiable(); 
+        goodHandleCmd.Setup(c => c.Execute()).Verifiable();
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.Handle",
             (object[] args) => goodHandleCmd.Object
@@ -28,9 +29,9 @@ public class GameCommandTests{
 
         var cmd = new Mock<Lib.ICommand>();
         cmd.Setup(c => c.Execute()).Callback(() => Thread.Sleep(50)).Verifiable();
-        
+
         var cmdE = new Mock<Lib.ICommand>();
-        cmdE.Setup(c => c.Execute()).Throws(new Exception()).Verifiable(); 
+        cmdE.Setup(c => c.Execute()).Throws(new Exception()).Verifiable();
 
         var q = new Queue<Lib.ICommand>();
         q.Enqueue(cmd.Object);
@@ -54,17 +55,17 @@ public class GameCommandTests{
         var scope = IoC.Resolve<object>("Scopes.Current");
         int timeQ = 50;
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GameCommand.TimeQuantum",
-            (object[] args) => (object) timeQ
+            (object[] args) => (object)timeQ
         ).Execute();
 
         var goodHandleCmd = new Mock<Lib.ICommand>();
-        goodHandleCmd.Setup(c => c.Execute()).Verifiable(); 
+        goodHandleCmd.Setup(c => c.Execute()).Verifiable();
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.Handle",
             (object[] args) => goodHandleCmd.Object
         ).Execute();
         var cmd = new Mock<Lib.ICommand>();
-        
+
         cmd.Setup(c => c.Execute()).Callback(() => Thread.Sleep(50)).Verifiable();
         var q = new Queue<Lib.ICommand>();
         q.Enqueue(cmd.Object);
@@ -86,21 +87,21 @@ public class GameCommandTests{
         var scope = IoC.Resolve<object>("Scopes.Current");
         int timeQ = 0;
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GameCommand.TimeQuantum",
-            (object[] args) => (object) timeQ
+            (object[] args) => (object)timeQ
         ).Execute();
         var goodHandleCmd = new Mock<Lib.ICommand>();
-        goodHandleCmd.Setup(c => c.Execute()).Verifiable(); 
+        goodHandleCmd.Setup(c => c.Execute()).Verifiable();
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.Handle",
             (object[] args) => goodHandleCmd.Object
         ).Execute();
         var cmd = new Mock<Lib.ICommand>();
-        
+
         cmd.Setup(c => c.Execute()).Verifiable();
         var q = new Queue<Lib.ICommand>();
         q.Enqueue(cmd.Object);
         q.Enqueue(cmd.Object);
-      
+
 
         var gc = new GameCommand(scope, q);
         gc.Execute();
@@ -115,17 +116,17 @@ public class GameCommandTests{
         var scope = IoC.Resolve<object>("Scopes.Current");
         int timeQ = 10_000;
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GameCommand.TimeQuantum",
-            (object[] args) => (object) timeQ
+            (object[] args) => (object)timeQ
         ).Execute();
-        
+
         var cmdE = new Mock<Lib.ICommand>();
-        cmdE.Setup(c => c.Execute()).Throws(new Exception()).Verifiable(); 
-        
+        cmdE.Setup(c => c.Execute()).Throws(new Exception()).Verifiable();
+
         var cmd = new Mock<Lib.ICommand>();
         cmd.Setup(c => c.Execute()).Callback(() => Thread.Sleep(500)).Verifiable();
 
         var defaultHandleCmd = new Mock<Lib.ICommand>();
-        defaultHandleCmd.Setup(c => c.Execute()).Throws(new Exception()); 
+        defaultHandleCmd.Setup(c => c.Execute()).Throws(new Exception());
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.Handle",
             (object[] args) => defaultHandleCmd.Object
