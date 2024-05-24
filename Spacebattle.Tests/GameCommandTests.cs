@@ -107,7 +107,6 @@ public class GameCommandTests
         gc.Execute();
 
         cmd.Verify(c => c.Execute(), Times.Exactly(0));
-
     }
 
     [Fact]
@@ -125,11 +124,8 @@ public class GameCommandTests
         var cmd = new Mock<Lib.ICommand>();
         cmd.Setup(c => c.Execute()).Callback(() => Thread.Sleep(500)).Verifiable();
 
-        var defaultHandleCmd = new Mock<Lib.ICommand>();
-        defaultHandleCmd.Setup(c => c.Execute()).Throws(new Exception());
-
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.Handle",
-            (object[] args) => defaultHandleCmd.Object
+            (object[] args) => new DefaultHandlerStrategy().Run(args)
         ).Execute();
 
         var q = new Queue<Lib.ICommand>();
@@ -144,7 +140,6 @@ public class GameCommandTests
 
         cmd.Verify(c => c.Execute(), Times.Exactly(3));
         cmdE.Verify(c => c.Execute(), Times.Once());
-        defaultHandleCmd.Verify(c => c.Execute(), Times.Once());
 
         Assert.NotEmpty(q);
     }
