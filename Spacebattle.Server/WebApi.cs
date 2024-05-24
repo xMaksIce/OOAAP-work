@@ -12,7 +12,7 @@ namespace Spacebattle.Server
 
             var cmdFromMessage = IoC.Resolve<Lib.ICommand>("ServerThread.GetCommandFromMessage", contract);
 
-            IoC.Resolve<Lib.ICommand>($"ServerThread.SendMessageQueue{threadId}", contract, cmdFromMessage).Execute();
+            IoC.Resolve<Lib.ICommand>("ServerThread.SendMessageQueue", threadId, cmdFromMessage).Execute();
         }
     }
 }

@@ -49,7 +49,7 @@ public class EndpointTests
 
         var cmdFinal = new Mock<Lib.ICommand>();
         cmdFinal.Setup(c => c.Execute()).Verifiable();
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", $"ServerThread.SendMessageQueue{threadId}",
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "ServerThread.SendMessageQueue",
             (object[] args) => cmdFinal.Object
         ).Execute();
 
@@ -74,7 +74,6 @@ public class EndpointTests
 
         var endpoint = new WebApi();
 
-        var threadId = "1";
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "ServerThread.GetThreadId",
             (object[] args) =>
             {
@@ -90,7 +89,7 @@ public class EndpointTests
 
         var cmdFinal = new Mock<Lib.ICommand>();
         cmdFinal.Setup(c => c.Execute()).Verifiable();
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", $"ServerThread.SendMessageQueue{threadId}",
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "ServerThread.SendMessageQueue",
             (object[] args) => cmdFinal.Object
         ).Execute();
 
@@ -129,7 +128,7 @@ public class EndpointTests
 
         var cmdFinal = new Mock<Lib.ICommand>();
         cmdFinal.Setup(c => c.Execute()).Throws(new Exception());
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", $"ServerThread.SendMessageQueue{threadId}",
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "ServerThread.SendMessageQueue",
             (object[] args) => cmdFinal.Object
         ).Execute();
 
@@ -138,7 +137,7 @@ public class EndpointTests
     }
 
     [Fact]
-    public void FailedToCallMessageCommand()
+    public void FailedToReceiveMessageCommand()
     {
         var contract = new SpacebattleContract()
         {
@@ -163,6 +162,7 @@ public class EndpointTests
         var exCmd = new Mock<Lib.ICommand>();
         exCmd.Setup(c => c.Execute()).Throws(new Exception());
         var cmdFromMessage = new Mock<Lib.ICommand>();
+
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "ServerThread.GetCommandFromMessage",
             (object[] args) =>
             {
@@ -173,7 +173,7 @@ public class EndpointTests
 
         var cmdFinal = new Mock<Lib.ICommand>();
         cmdFinal.Setup(c => c.Execute()).Throws(new Exception());
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", $"ServerThread.SendMessageQueue{threadId}",
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "ServerThread.SendMessageQueue",
             (object[] args) => cmdFinal.Object
         ).Execute();
 
