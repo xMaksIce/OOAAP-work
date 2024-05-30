@@ -3,6 +3,7 @@ using Hwdtech;
 using Hwdtech.Ioc;
 using Moq;
 namespace Spacebattle.Tests;
+
 public class GameStrategyTests
 {
     public GameStrategyTests()
