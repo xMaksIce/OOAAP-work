@@ -14,26 +14,23 @@ public class GameStrategyTests
     [Fact]
     public void GameCreates()
     {
+        Hashtable fieldsInGame = new();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GameCommandImplementation", (object[] args) =>
+        {
+            fieldsInGame["tick"] = (int)args[0];
+            fieldsInGame["scope"] = args[1];
+            fieldsInGame["queue"] = (Queue<Lib.ICommand>)args[2];
+            return new Mock<Lib.ICommand>().Object;
+        }).Execute();
         int gameTick = 64;
         object scope = "scope";
         Queue<Lib.ICommand> queue = new();
-        int tickInGame = 0;
-        object scopeInGame = "";
-        Queue<Lib.ICommand> queueInGame = new();
-        queueInGame.Enqueue(new Mock<Lib.ICommand>().Object);
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GameCommandImplementation", (object[] args) =>
-        {
-            tickInGame = (int)args[0];
-            scopeInGame = args[1];
-            queueInGame = (Queue<Lib.ICommand>)args[2];
-            return new Mock<Lib.ICommand>().Object;
-        }).Execute();
         var createGameStrategy = new CreateGame();
         var gameFromStrategy = (GameCommand)createGameStrategy.Apply(gameTick, scope, queue);
         gameFromStrategy.Execute();
-        Assert.Equal(gameTick, tickInGame);
-        Assert.Equal(scope, scopeInGame);
-        Assert.Equal(queue, queueInGame);
+        Assert.Equal(gameTick, fieldsInGame["tick"]);
+        Assert.Equal(scope, fieldsInGame["scope"]);
+        Assert.Equal(queue, fieldsInGame["queue"]);
     }
     [Fact]
     public void GameDeletes()
