@@ -45,6 +45,21 @@ public class DeleteGame : ICommand
         table.Remove(_gameID);
     }
 }
+public class CreateScope : IStrategy
+{
+    public object Apply(params object[] args)
+    {
+        object parentScope = args[0];
+        object scope = IoC.Resolve<object>("Scopes.New", parentScope);
+        IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", scope).Execute();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.GetTickValue", (object[] args) => new GetTick().Apply(args)).Execute();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.TakeFromQueue", (object[] args) => new TakeFromQueue().Apply(args)).Execute();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.PutInQueue", (object[] args) => new PutInQueue((int)args[0], (ICommand)args[1])).Execute();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.GetObject", (object[] args) => new GetObject().Apply(args)).Execute();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.DeleteObject", (object[] args) => new DeleteObject((int)args[0], (int)args[1])).Execute();
+        return scope;
+    }
+}
 public class TakeFromQueue : IStrategy
 {
     public object Apply(params object[] args)
@@ -94,5 +109,14 @@ public class DeleteObject : ICommand
     {
         var pool = IoC.Resolve<Hashtable>("Game.Pool", _gameID);
         pool.Remove(_objectID);
+    }
+}
+public class GetTick : IStrategy
+{
+    public object Apply(params object[] args)
+    {
+        int gameID = (int)args[0];
+        int tick = IoC.Resolve<int>("Game.Tick", gameID);
+        return tick;
     }
 }

@@ -99,4 +99,18 @@ public class GameStrategyTests
         var getObjectStrategy = new GetObject();
         Assert.Throws<ArgumentNullException>(() => getObjectStrategy.Apply(gameID, nonExistentObjectID));
     }
+    [Fact]
+    public void ScopeCreates()
+    {
+        var scopeCreateStrategy = new CreateScope();
+        var parentScope = IoC.Resolve<object>("Scopes.Current");
+        var scope = scopeCreateStrategy.Apply(parentScope);
+        IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", scope).Execute();
+        int gameID = 16;
+        int tick = 128;
+        Hashtable ticks = new() { [gameID] = tick };
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Tick", (object[] args) => ticks[gameID]).Execute();
+        object actualTick = IoC.Resolve<object>("Game.GetTickValue", gameID);
+        Assert.Equal(tick, actualTick);
+    }
 }
