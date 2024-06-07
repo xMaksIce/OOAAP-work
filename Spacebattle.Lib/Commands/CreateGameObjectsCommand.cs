@@ -1,7 +1,7 @@
 using Hwdtech;
 
-namespace Spacebattle.Lib; 
-public class CreateGameObjectsCommand: ICommand
+namespace Spacebattle.Lib;
+public class CreateGameObjectsCommand : ICommand
 {
     int _gameObjectsPerPlayer;
     int _playersAmount;
@@ -13,11 +13,11 @@ public class CreateGameObjectsCommand: ICommand
     }
     public void Execute()
     {
-        var gameObjects =  IoC.Resolve<Dictionary<(int, int), IUObject>>("Game.Dictionary.PlayersAndShips");
+        var gameObjects = IoC.Resolve<Dictionary<(int, int), IUObject>>("Game.Dictionary.PlayersAndShips");
 
-        Enumerable.Range(0, _playersAmount).ToList().ForEach(playerId => 
+        Enumerable.Range(0, _playersAmount).ToList().ForEach(playerId =>
         {
-            Enumerable.Range(0, _gameObjectsPerPlayer).ToList().ForEach(gameObjectId => 
+            Enumerable.Range(0, _gameObjectsPerPlayer).ToList().ForEach(gameObjectId =>
                 {
                     gameObjects.Add((playerId, gameObjectId), IoC.Resolve<IUObject>("Game.GameObject.Create"));
                 });

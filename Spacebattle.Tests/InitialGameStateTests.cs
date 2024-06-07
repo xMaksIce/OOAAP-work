@@ -10,7 +10,7 @@ public class InitialGameStateTests
         new InitScopeBasedIoCImplementationCommand().Execute();
 
         IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set",
-            IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root")) 
+            IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root"))
         ).Execute();
     }
     [Fact]
@@ -35,44 +35,44 @@ public class InitialGameStateTests
 
         Assert.Equal(6, IoC.Resolve<Dictionary<(int, int), IUObject>>("Game.Dictionary.PlayersAndShips").Count);
 
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.GameObjectsPerPlayer", 
-            (object[] args) => (object) shipsPerPlayer).Execute();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.GameObjectsPerPlayer",
+            (object[] args) => (object)shipsPerPlayer).Execute();
 
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Players.Amount", 
-            (object[] args) => (object) playersAmount).Execute();        
-        
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Players.Amount",
+            (object[] args) => (object)playersAmount).Execute();
+
         // var mockIterator = new Mock<IEnumerator<int>>();
-        var playersIds = new Iterator(new List<object>(){0, 1});
+        var playersIds = new Iterator(new List<object>() { 0, 1 });
 
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Players.Ids", 
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Players.Ids",
             (object[] args) => playersIds).Execute();
 
         var setPositionCmd = new Mock<Lib.ICommand>();
         setPositionCmd.Setup(c => c.Execute()).Verifiable();
         var setFuelCmd = new Mock<Lib.ICommand>();
         setFuelCmd.Setup(c => c.Execute()).Verifiable();
-        
+
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.SetProperty",
-            (object[] args) => 
-            // new UActionCommand(() => {
-            //     var id = ((int, int)) args[0];
-            //     string propertyName = (string) args[1];
-            //     object value = args[2];
-            //     // IUObject ship = IoC.Resolve<Dictionary<(int, int), IUObject>>("Game.Dictionary.PlayersAndShips")[id];
-            //     // ship.SetProperty(propertyName, value);
-            //     IoC.Resolve<Dictionary<(int, int), IUObject>>("Game.Dictionary.PlayersAndShips")[id].SetProperty(propertyName, value);
-            // })
+            (object[] args) =>
+                // new UActionCommand(() => {
+                //     var id = ((int, int)) args[0];
+                //     string propertyName = (string) args[1];
+                //     object value = args[2];
+                //     // IUObject ship = IoC.Resolve<Dictionary<(int, int), IUObject>>("Game.Dictionary.PlayersAndShips")[id];
+                //     // ship.SetProperty(propertyName, value);
+                //     IoC.Resolve<Dictionary<(int, int), IUObject>>("Game.Dictionary.PlayersAndShips")[id].SetProperty(propertyName, value);
+                // })
                 new UActionCommand(() =>
                 {
-                   if ((string) args[1] == "Position")  setPositionCmd.Object.Execute();
-                   else if ((string) args[1] == "Fuel")  setFuelCmd.Object.Execute();
-                   
-                }) 
+                    if ((string)args[1] == "Position") setPositionCmd.Object.Execute();
+                    else if ((string)args[1] == "Fuel") setFuelCmd.Object.Execute();
+
+                })
         ).Execute();
 
 
         new PlacePlayersShipsCommand().Execute();
-        
+
         setPositionCmd.Verify(c => c.Execute(), Times.Exactly(6));
 
         double fuelCapacity = 50.5;
@@ -84,12 +84,12 @@ public class InitialGameStateTests
     [Fact]
     public void IteratorTest()
     {
-        var iterator = new Iterator(new List<object>(){1, 2});
+        var iterator = new Iterator(new List<object>() { 1, 2 });
         Assert.NotEqual(2, (int)iterator.Current);
         iterator.MoveNext();
         Assert.Equal(2, (int)iterator.Current);
 
         Assert.Throws<System.NotImplementedException>(() => iterator.Dispose());
-        
+
     }
 }
