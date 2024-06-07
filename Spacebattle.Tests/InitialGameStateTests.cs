@@ -68,6 +68,7 @@ public class InitialGameStateTests
 
         double fuelCapacity = 50.5;
         new SetFuelCapacityCommand(fuelCapacity).Execute();
+
         setFuelCmd.Verify(c => c.Execute(), Times.Exactly(6));
 
     }
