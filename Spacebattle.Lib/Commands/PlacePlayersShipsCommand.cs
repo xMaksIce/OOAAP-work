@@ -12,10 +12,9 @@ public class PlacePlayersShipsCommand : ICommand
 
         Enumerable.Range(0, _playersAmount).ToList().ForEach(playerId =>
         {
-
+ 
             Enumerable.Range(0, gameObjectsPerPlayer).ToList().ForEach(shipId =>
             {
-
                 var position = new Vector(new int[] { shipId, (int)_playersIds.Current });
                 var playerAndShipId = ((int)_playersIds.Current, shipId);
                 IoC.Resolve<ICommand>("Game.Commands.SetProperty", playerAndShipId, "Position", position).Execute();

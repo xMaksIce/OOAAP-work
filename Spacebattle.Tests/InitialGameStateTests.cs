@@ -41,7 +41,6 @@ public class InitialGameStateTests
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Players.Amount",
             (object[] args) => (object)playersAmount).Execute();
 
-        // var mockIterator = new Mock<IEnumerator<int>>();
         var playersIds = new Iterator(new List<object>() { 0, 1 });
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Players.Ids",
@@ -54,14 +53,6 @@ public class InitialGameStateTests
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.SetProperty",
             (object[] args) =>
-                // new UActionCommand(() => {
-                //     var id = ((int, int)) args[0];
-                //     string propertyName = (string) args[1];
-                //     object value = args[2];
-                //     // IUObject ship = IoC.Resolve<Dictionary<(int, int), IUObject>>("Game.Dictionary.PlayersAndShips")[id];
-                //     // ship.SetProperty(propertyName, value);
-                //     IoC.Resolve<Dictionary<(int, int), IUObject>>("Game.Dictionary.PlayersAndShips")[id].SetProperty(propertyName, value);
-                // })
                 new UActionCommand(() =>
                 {
                     if ((string)args[1] == "Position") setPositionCmd.Object.Execute();

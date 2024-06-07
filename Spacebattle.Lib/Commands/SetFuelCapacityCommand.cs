@@ -22,7 +22,6 @@ public class SetFuelCapacityCommand : ICommand
             Enumerable.Range(0, gameObjectsPerPlayer).ToList().ForEach(shipId =>
             {
 
-                var position = new Vector(new int[] { shipId, (int)_playersIds.Current });
                 IoC.Resolve<ICommand>("Game.Commands.SetProperty", ((int)_playersIds.Current, shipId), "Fuel", _fuelCapacity).Execute();
             });
 

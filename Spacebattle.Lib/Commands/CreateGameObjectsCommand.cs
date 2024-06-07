@@ -5,7 +5,6 @@ public class CreateGameObjectsCommand : ICommand
 {
     int _gameObjectsPerPlayer;
     int _playersAmount;
-    // int _totalGameObjectsNumber;
     public CreateGameObjectsCommand(int playersAmount, int gameObjectsPerPlayer)
     {
         _gameObjectsPerPlayer = gameObjectsPerPlayer;
