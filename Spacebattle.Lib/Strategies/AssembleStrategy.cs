@@ -1,14 +1,16 @@
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Hwdtech;
 namespace Spacebattle.Lib;
 public class AssembleStrategy
 {
     public object Apply(params object[] args)
     {
-        var code = (string)args[0];
-        var adapterType = (Type)args[1];
-        var compilation = CSharpCompilation.Create(adapterType.ToString() + "Adapter").AddReferences(new[]{
+        Type interfaceType = (Type)args[0];
+        Type fieldType = (Type)args[1];
+        string code = IoC.Resolve<string>("Game.StringCode", interfaceType, fieldType);
+        var compilation = CSharpCompilation.Create(interfaceType.ToString() + "Adapter").AddReferences(new[]{
             MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
             MetadataReference.CreateFromFile(Assembly.Load("Spacebattle.Lib").Location)})
             .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
