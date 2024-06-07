@@ -46,6 +46,7 @@ public class InitialGameStateTests
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Players.Ids",
             (object[] args) => playersIds).Execute();
 
+
         var setPositionCmd = new Mock<Lib.ICommand>();
         setPositionCmd.Setup(c => c.Execute()).Verifiable();
         var setFuelCmd = new Mock<Lib.ICommand>();
