@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Spacebattle.Lib\Spacebattle.Lib.csproj" />
+    <ProjectReference Include="..\Spacebattle.Server\Spacebattle.Server.csproj" />
    </ItemGroup>
 
 

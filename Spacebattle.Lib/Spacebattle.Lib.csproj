@@ -11,4 +11,10 @@
     <PackageReference Include="Hwdtech.IoC.ScopeBasedIoCImplementation" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CoreWCF.WebHttp" Version="1.5.2" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+  </ItemGroup>
+
 </Project>
